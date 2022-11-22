@@ -9,7 +9,7 @@
 Vannak itt további kódrészletek is, amik nem érdemelnek saját projektet, de mégis hasznosak lehetnek:
 - ✔ [Windows Forms fájl megnyitás/mentés ablak](https://github.com/glorantq/eva-templatek/blob/main/Kodreszletek/WinForms-FileDialogs/README.md)
 - ✔ [WPF fájl megnyitás/mentés ablak](https://github.com/glorantq/eva-templatek/blob/main/Kodreszletek/WPF-FileDialogs/README.md)
-- 🛠 Univerzális mentés/betöltés tetszőleges objektumra
+- 🛠 [Univerzális mentés/betöltés tetszőleges objektumra](https://github.com/glorantq/eva-templatek/tree/main/Serialisation)
 
 > ✔ = kész, 🛠 = folyamatban, ❌ = abszolút nincs hozzá kedvem
 
