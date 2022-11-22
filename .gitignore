@@ -1,3 +1,8 @@
+*.dll
+*.exe
+*/**/*.dll
+*/**/*.exe
+
 # Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,rider,visualstudio,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,rider,visualstudio,visualstudiocode
 
