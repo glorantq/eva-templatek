@@ -4,7 +4,7 @@
 |-------------------|---------------|-----|------|
 | Panel mátrix      | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-PanelMatrix) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-PanelMatrix) | 🛠 |
 | Gomb mátrix       | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-ButtonMatrix) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-ButtonMatrix) | 🛠 |
-| Lefelé eső cuccok | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-Falling) | 🛠 | 🛠 |
+| Lefelé eső cuccok | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-Falling) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-Falling) | 🛠 |
 
 Vannak itt további kódrészletek is, amik nem érdemelnek saját projektet, de mégis hasznosak lehetnek:
 - ✔ [Windows Forms fájl megnyitás/mentés ablak](https://github.com/glorantq/eva-templatek/blob/main/Kodreszletek/WinForms-FileDialogs/README.md)
