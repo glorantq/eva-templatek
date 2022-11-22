@@ -6,6 +6,11 @@
 | Gomb mátrix       | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-ButtonMatrix) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-ButtonMatrix) | 🛠 |
 | Lefele eső cuccok | 🛠 | 🛠 | 🛠 |
 
+Vannak itt további kódrészletek is, amik nem érdemelnek saját projektet, de mégis hasznosak lehetnek:
+- 🛠 Windows Forms fájl megnyitás/mentés ablak
+- 🛠 WPF fájl megnyitás/mentés ablak
+- 🛠 Univerzális mentés/betöltés tetszőleges objektumra
+
 > ✔ = kész, 🛠 = folyamatban, ❌ = abszolút nincs hozzá kedvem
 
 Természetesen minden ami itt található C# és .NET 6-al készült. 
