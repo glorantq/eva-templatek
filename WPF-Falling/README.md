@@ -1,4 +1,4 @@
-# Windows Forms lefelé eső objektumok
+# WPF lefelé eső objektumok
 
 Template olyan játékokhoz, ahol WPF-et kell használni, és pl. lefelé esnek objektumok amiket el kell kapkodni.
 
