@@ -1,0 +1,51 @@
+﻿<Window x:Class="WPF_ButtonMatrix.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="512" Width="512">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="1" 
+                   Grid.Column="0" 
+                   Text="Lehet természetetsen más controlt is elhelyezni, mint például ez a label, az egész csak egy Grid." 
+                   HorizontalAlignment="Center"  
+                   VerticalAlignment="Center" 
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"/>
+        
+        <!-- Ez az ItemsControl valósítja meg a mátrix megjelenítését, ehhez ne nyúlj, nincs itt semmi amit módosítani kell, minden
+             bindingokkal van megoldva, kódban változtathatsz mindent. (Grid.Column és Grid.Row kivétel ha más a layout amit szeretnél -->
+
+        <ItemsControl Grid.Row="0" 
+                      Grid.Column="0" 
+                      ItemsSource="{Binding Cells, Mode=OneWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="{Binding Columns, Mode=OneWay}" 
+                                 Rows="{Binding Rows, Mode=OneWay}"
+                                 Width="{Binding MatrixWidth, Mode=OneWay}"
+                                 Height="{Binding MatrixHeight, Mode=OneWay}"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Background="{Binding BackgroundBrush, Mode=OneWay}"
+                                Content="{Binding Content, Mode=OneWay}"
+                                Command="{Binding ClickCommand, Mode=OneWay}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>
