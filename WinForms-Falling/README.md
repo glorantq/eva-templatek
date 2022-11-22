@@ -4,4 +4,4 @@ Template olyan játékokhoz, ahol Windows Formsot kell használni, és pl. lefel
 
 A többihez képest ez viszonylag nagyobb és kevésbé lehet ész nélkül használni, viszont ha másnak nem is, kiindulási pontnak biztos jó.
 
-![Hdw9AZv.md.png](https://iili.io/Hdw9AZv.md.png)
+![HdwVQNp.png](https://iili.io/HdwVQNp.png)

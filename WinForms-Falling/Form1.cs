@@ -1,4 +1,5 @@
-﻿using WinForms_Falling.Properties;
+﻿using System.Drawing;
+using WinForms_Falling.Properties;
 using Timer = System.Windows.Forms.Timer;
 
 namespace WinForms_Falling {
@@ -100,12 +101,54 @@ namespace WinForms_Falling {
                 Height = 32
             });
         }
+
+        private void button4_Click(object sender, EventArgs e) {
+            QueueForRendering(new CustomPaintRenderable((graphics, clip) => {
+                graphics.FillRectangle(new SolidBrush(Color.Purple), clip);
+                clip.Inflate(-5, -5);
+                graphics.FillRectangle(new SolidBrush(Color.Red), clip);
+                clip.Inflate(-5, -5);
+                graphics.FillRectangle(new SolidBrush(Color.Orange), clip);
+                clip.Inflate(-5, -5);
+                graphics.FillRectangle(new SolidBrush(Color.Yellow), clip);
+            }) {
+                X = _random.Next(0, Width - 16),
+                Y = 0,
+                Width = 32,
+                Height = 32
+            });
+        }
         #endregion
     }
 
     // Ezek az implementációk csak példának vannak itt főleg (persze lehet ezeket is használni), de a "helyes" megoldás az
     // lenne, ha ezek mintájára írunk egy saját Renderable alosztályt, ami a modellünkben levő objektumokkal
     // kommunikál.
+
+    public class CustomPaintRenderable : Renderable {
+        private Action<Graphics, Rectangle> _drawingMethod;
+
+        public CustomPaintRenderable(Action<Graphics, Rectangle> drawingMethod) {
+            _drawingMethod = drawingMethod;
+        }
+
+        public override void CreateControl(Control.ControlCollection container) {
+            AssociatedControl = new Panel() {
+                Location = new(X, Y),
+                Size = new(Width, Height)
+            };
+
+            AssociatedControl.Paint += (sender, e) => { _drawingMethod(e.Graphics, e.ClipRectangle); };
+
+            container.Add(AssociatedControl);
+            _container = container;
+        }
+
+        public override void Render() {
+            AssociatedControl!.Location = new(X, Y);
+            AssociatedControl!.Size = new(Width, Height);
+        }
+    }
 
     public class ImageRenderable : Renderable {
         private readonly Bitmap _bitmap;
