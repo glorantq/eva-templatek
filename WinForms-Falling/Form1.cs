@@ -22,12 +22,14 @@ namespace WinForms_Falling {
         public Form1() {
             InitializeComponent();
 
+            #region Demo-kód
             _timer.Interval = 10;
             _timer.Tick += (sender, args) => { PerformRendering(); };
             _timer.Start();
+            #endregion
         }
 
-        // Ezt a metódust kell meghívni mindig amikor frissíteni szeretnénk a rajzolt objektumokat; amelyikeket tötölni
+        // Ezt a metódust kell meghívni mindig amikor frissíteni szeretnénk a rajzolt objektumokat; amelyikeket törölni
         // szeretnénk ténylegesen kitörli, amelyeket hozzá szeretnénk adni a listához azokat pedig beállítja rendesen
         private void PerformRendering() {
             List<Renderable> toBeRemoved = new();
@@ -40,7 +42,6 @@ namespace WinForms_Falling {
                     renderable.Render(); 
                 }
             }
-
 
             toBeRemoved.ForEach((renderable) => renderable.Destroy());
             Renderables.RemoveAll((renderable) => toBeRemoved.Contains(renderable));
