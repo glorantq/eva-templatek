@@ -3,7 +3,7 @@
 | Típus             | Windows Forms | WPF | MAUI |
 |-------------------|---------------|-----|------|
 | Panel mátrix      | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-PanelMatrix) | 🛠 | 🛠 |
-| Gomb mátrix       | 🛠 | 🛠 | 🛠 |
+| Gomb mátrix       | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-ButtonMatrix) | 🛠 | 🛠 |
 | Lefele eső cuccok | 🛠 | 🛠 | 🛠 |
 
 > ✔ = kész, 🛠 = folyamatban, ❌ = abszolút nincs hozzá kedvem
