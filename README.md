@@ -20,7 +20,7 @@ Természetesen minden ami itt található C# és .NET 6-al készült.
 |                   | Windows Forms | WPF | MAUI |
 |-------------------|---------------|-----|------|
 | Panel mátrix      | [![Zsamo](https://markdown-videos.deta.dev/youtube/XaKn3NqV5iI)](https://youtu.be/XaKn3NqV5iI) |  |  |
-| Gomb mátrix       | |  |  |
+| Gomb mátrix       | (99%-ban ugyan az mint a panelmátrix) |  |  |
 | Lefele eső cuccok |  |  |  |
 
 
