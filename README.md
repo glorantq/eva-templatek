@@ -6,7 +6,7 @@
 | Gomb mátrix       | 🛠 | 🛠 | 🛠 |
 | Lefele eső cuccok | 🛠 | 🛠 | 🛠 |
 
-> ✔ = kész, 🛠 = folyamatban, ❌ = abszolűút nincs hozzá kedvem
+> ✔ = kész, 🛠 = folyamatban, ❌ = abszolút nincs hozzá kedvem
 
 Természetesen minden ami itt található C# és .NET 6-al készült. 
 
