@@ -18,4 +18,4 @@ Természetesen minden ami itt található C# és .NET 6-al készült.
 ---
 
 Mint a repoban is látható a license az az Unlicense, vagy "public domain", ahogy tetszik.
-Lényeg hogy mindenféle tulajdoni és szerződi jogról lemondok, az itt található kódokat szabad felhasználásba hozom, közkincssé teszem, mindenki azt csinál vele amit jónak lát.
+Lényeg hogy mindenféle tulajdoni és szerződi jogról lemondok, az itt található kódokat szabad felhasználásba hozom, közkincssé teszem, név feltüntetése nélkül használható, mindenki azt csinál vele amit jónak lát. (lásd: 1999. évi LXXVI. törvény a szerzői jogról, 12.§ (3), 33.§)
