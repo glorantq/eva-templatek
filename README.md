@@ -1,6 +1,6 @@
 ## Megjelenítéssel kapcsolatos segédanyagok az Eseményvezérelt alkalmazások tantárgyhoz
 
-| Típus             | Windows Forms | WPF | MAUI |
+|                   | Windows Forms | WPF | MAUI |
 |-------------------|---------------|-----|------|
 | Panel mátrix      | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-PanelMatrix) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-PanelMatrix) | 🛠 |
 | Gomb mátrix       | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WinForms-ButtonMatrix) | ✔ [(itt)](https://github.com/glorantq/eva-templatek/tree/main/WPF-ButtonMatrix) | 🛠 |
@@ -14,6 +14,16 @@ Vannak itt további kódrészletek is, amik nem érdemelnek saját projektet, de
 > ✔ = kész, 🛠 = folyamatban, ❌ = abszolút nincs hozzá kedvem
 
 Természetesen minden ami itt található C# és .NET 6-al készült. 
+
+---
+
+|                   | Windows Forms | WPF | MAUI |
+|-------------------|---------------|-----|------|
+| Panel mátrix      | [![Zsamo](https://markdown-videos.deta.dev/youtube/XaKn3NqV5iI)](https://youtu.be/XaKn3NqV5iI) |  |  |
+| Gomb mátrix       | |  |  |
+| Lefele eső cuccok |  |  |  |
+
+
 
 ---
 
