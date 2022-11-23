@@ -1,7 +1,7 @@
 ﻿namespace Serialisation {
     public class Serialiser {
         private enum SerialisedType {
-            STRING, INT, LONG, DOUBLE, FLOAT, BOOL, BYTE, NULL, ARRAY
+            STRING, INT, LONG, DOUBLE, FLOAT, BOOL, BYTE, NULL, ARRAY, ENUM
         }
 
         public static byte[] Serialise(object? obj) {
@@ -49,8 +49,13 @@
                 if(fieldType != SerialisedType.NULL) {
                     if(fieldType == SerialisedType.ARRAY) {
                         SerialisedType arrayType = (SerialisedType)reader.ReadByte();
+
+                        Type elementType = arrayType == SerialisedType.ENUM
+                            ? Type.GetType(reader.ReadString())!
+                            : GetRuntimeTypeForArrays(arrayType);
+
                         int arrayLength = reader.Read7BitEncodedInt();
-                        Array array = Array.CreateInstance(GetRuntimeTypeForArrays(arrayType), arrayLength);
+                        Array array = Array.CreateInstance(elementType, arrayLength);
 
                         for(int j = 0; j < array.Length; j++) {
                             if (reader.ReadByte() != 0) {
@@ -58,7 +63,9 @@
                             }
 
                             reader.ReadString(); // discard
-                            array.SetValue(ReadField(reader, (SerialisedType)reader.ReadByte()), j);
+                            object? readValue = ReadField(reader, (SerialisedType)reader.ReadByte());
+                            
+                            array.SetValue(readValue, j);
 
                             if (reader.ReadByte() != 0) {
                                 throw new ApplicationException("Hibás halmaz.");
@@ -66,6 +73,8 @@
                         }
 
                         toSet = array;
+                    } else if (fieldType == SerialisedType.ENUM) {
+                        toSet = ReadEnum(reader);
                     } else {
                         toSet = ReadField(reader, fieldType);
                     }
@@ -81,34 +90,19 @@
             return (T) createdObject;
         }
 
-        private static object? ReadField(BinaryReader reader, SerialisedType type) {
-            object? toSet;
-
-            switch (type) {
-                case SerialisedType.STRING:
-                    toSet = ReadString(reader);
-                    break;
-                case SerialisedType.INT:
-                    toSet = ReadInt(reader);
-                    break;
-                case SerialisedType.LONG:
-                    toSet = ReadLong(reader);
-                    break;
-                case SerialisedType.DOUBLE:
-                    toSet = ReadDouble(reader);
-                    break;
-                case SerialisedType.FLOAT:
-                    toSet = ReadFloat(reader);
-                    break;
-                case SerialisedType.BOOL:
-                    toSet = ReadBool(reader);
-                    break;
-                case SerialisedType.BYTE:
-                    toSet = ReadByte(reader);
-                    break;
-                default:
-                    throw new ApplicationException("Ismeretlen típus.");
-            }
+        private static object? ReadField(BinaryReader reader, SerialisedType type)
+        {
+            object? toSet = type switch {
+                SerialisedType.STRING => ReadString(reader),
+                SerialisedType.INT => ReadInt(reader),
+                SerialisedType.LONG => ReadLong(reader),
+                SerialisedType.DOUBLE => ReadDouble(reader),
+                SerialisedType.FLOAT => ReadFloat(reader),
+                SerialisedType.BOOL => ReadBool(reader),
+                SerialisedType.BYTE => ReadByte(reader),
+                SerialisedType.ENUM => ReadEnum(reader),
+                _ => throw new ApplicationException("Ismeretlen típus.")
+            };
 
             return toSet;
         }
@@ -123,28 +117,44 @@
                     Array valueArray = (value as Array)!;
 
                     writer.Write((byte)SerialisedType.ARRAY);
-                    writer.Write((byte)GetSerialisedTypeForArrays(value.GetType().GetElementType()!));
+                    if (value.GetType().GetElementType()!.IsEnum) {
+                        writer.Write((byte)SerialisedType.ENUM);
+                        writer.Write(value.GetType().GetElementType()!.AssemblyQualifiedName!);
+                    } else {
+                        writer.Write((byte)GetSerialisedTypeForArrays(value.GetType().GetElementType()!));
+                    }
+
                     writer.Write7BitEncodedInt(valueArray.Length);
 
                     foreach(object? element in valueArray) {
                         WriteKeyValuePair(writer, "", element);
                     }
-                } else if(value.GetType() == typeof(string)) {
-                    WriteString(writer, (string)value);
-                } else if(value.GetType() == typeof(int)) {
-                    WriteInt(writer, (int)value);
-                } else if(value.GetType() == typeof(long)) {
-                    WriteLong(writer, (long)value);
-                } else if(value.GetType() == typeof(double)) {
-                    WriteDouble(writer, (double)value);
-                } else if(value.GetType() == typeof(float)) {
-                    WriteFloat(writer, (float)value);
-                } else if(value.GetType() == typeof(bool)) {
-                    WriteBool(writer, (bool)value);
-                } else if(value.GetType() == typeof(byte)) {
-                    WriteByte(writer, (byte)value);
-                } else {
-                    throw new ArgumentException("Ismeretlen típus.");
+                } else if (value.GetType().IsEnum) {
+                    WriteEnum(writer, value);
+                } else switch (value) {
+                    case string s:
+                        WriteString(writer, s);
+                        break;
+                    case int i:
+                        WriteInt(writer, i);
+                        break;
+                    case long l:
+                        WriteLong(writer, l);
+                        break;
+                    case double d:
+                        WriteDouble(writer, d);
+                        break;
+                    case float f:
+                        WriteFloat(writer, f);
+                        break;
+                    case bool b:
+                        WriteBool(writer, b);
+                        break;
+                    case byte value1:
+                        WriteByte(writer, value1);
+                        break;
+                    default:
+                        throw new ArgumentException("Ismeretlen típus.");
                 }
             } else {
                 writer.Write((byte)SerialisedType.NULL);
@@ -153,34 +163,18 @@
             writer.Write((byte)0);
         }
 
-        private static Type GetRuntimeTypeForArrays(SerialisedType type) {
-            Type t;
-            
-            switch(type) {
-                case SerialisedType.STRING:
-                    t = typeof(string);
-                    break;
-                case SerialisedType.INT:
-                    t = typeof(int);
-                    break;
-                case SerialisedType.LONG:
-                    t = typeof(long);
-                    break;
-                case SerialisedType.DOUBLE:
-                    t = typeof(double);
-                    break;
-                case SerialisedType.FLOAT:
-                    t = typeof(float);
-                    break;
-                case SerialisedType.BOOL:
-                    t = typeof(bool);
-                    break;
-                case SerialisedType.BYTE:
-                    t = typeof(byte);
-                    break;
-                default:
-                    throw new ApplicationException("Ismeretlen típus.");
-            }
+        private static Type GetRuntimeTypeForArrays(SerialisedType type)
+        {
+            Type t = type switch {
+                SerialisedType.STRING => typeof(string),
+                SerialisedType.INT => typeof(int),
+                SerialisedType.LONG => typeof(long),
+                SerialisedType.DOUBLE => typeof(double),
+                SerialisedType.FLOAT => typeof(float),
+                SerialisedType.BOOL => typeof(bool),
+                SerialisedType.BYTE => typeof(byte),
+                _ => throw new ApplicationException("Ismeretlen típus.")
+            };
 
             return t;
         }
@@ -237,6 +231,14 @@
             return reader.ReadByte();
         }
 
+        private static object ReadEnum(BinaryReader reader) {
+            string typeName = reader.ReadString();
+            int numericValue = reader.Read7BitEncodedInt();
+                        
+            Type runtimeType = Type.GetType(typeName)!;
+            return Enum.ToObject(runtimeType, numericValue);
+        }
+
         private static void WriteString(BinaryWriter writer, string value) {
             writer.Write((byte)SerialisedType.STRING);
             writer.Write(value);
@@ -270,6 +272,12 @@
         private static void WriteByte(BinaryWriter writer, byte value) {
             writer.Write((byte)SerialisedType.BYTE);
             writer.Write(value);
+        }
+
+        private static void WriteEnum(BinaryWriter writer, object value) {
+            writer.Write((byte)SerialisedType.ENUM);
+            writer.Write(value.GetType().AssemblyQualifiedName!);
+            writer.Write7BitEncodedInt((int)value);
         }
     }
 }
