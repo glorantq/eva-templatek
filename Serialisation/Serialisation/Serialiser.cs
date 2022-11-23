@@ -14,7 +14,7 @@
 
             Type dataType = obj.GetType();
 
-            writer.Write7BitEncodedInt(dataType.GetFields().Length);
+            writer.Write(dataType.GetFields().Length);
 
             foreach (var field in dataType.GetFields()) {
                 WriteKeyValuePair(writer, field.Name, field.GetValue(obj));
@@ -34,7 +34,7 @@
             Type dataType = typeof(T);
             object createdObject = dataType.GetConstructor(Type.EmptyTypes)!.Invoke(Array.Empty<object?>());
 
-            int fieldCount = reader.Read7BitEncodedInt();
+            int fieldCount = reader.ReadInt32();
 
             for(int i = 0; i < fieldCount; i++) {
                 if(reader.ReadByte() != 0) {
@@ -54,7 +54,7 @@
                             ? Type.GetType(reader.ReadString())!
                             : GetRuntimeTypeForArrays(arrayType);
 
-                        int arrayLength = reader.Read7BitEncodedInt();
+                        int arrayLength = reader.ReadInt32();
                         Array array = Array.CreateInstance(elementType, arrayLength);
 
                         for(int j = 0; j < array.Length; j++) {
@@ -73,8 +73,6 @@
                         }
 
                         toSet = array;
-                    } else if (fieldType == SerialisedType.ENUM) {
-                        toSet = ReadEnum(reader);
                     } else {
                         toSet = ReadField(reader, fieldType);
                     }
@@ -101,6 +99,7 @@
                 SerialisedType.BOOL => ReadBool(reader),
                 SerialisedType.BYTE => ReadByte(reader),
                 SerialisedType.ENUM => ReadEnum(reader),
+                SerialisedType.NULL => null,
                 _ => throw new ApplicationException("Ismeretlen típus.")
             };
 
@@ -124,7 +123,7 @@
                         writer.Write((byte)GetSerialisedTypeForArrays(value.GetType().GetElementType()!));
                     }
 
-                    writer.Write7BitEncodedInt(valueArray.Length);
+                    writer.Write(valueArray.Length);
 
                     foreach(object? element in valueArray) {
                         WriteKeyValuePair(writer, "", element);
@@ -208,11 +207,11 @@
         }
 
         private static int ReadInt(BinaryReader reader) {
-            return reader.Read7BitEncodedInt();
+            return reader.ReadInt32();
         }
 
         private static long ReadLong(BinaryReader reader) {
-            return reader.Read7BitEncodedInt64();
+            return reader.ReadInt64();
         }
 
         private static double ReadDouble(BinaryReader reader) {
@@ -233,7 +232,7 @@
 
         private static object ReadEnum(BinaryReader reader) {
             string typeName = reader.ReadString();
-            int numericValue = reader.Read7BitEncodedInt();
+            int numericValue = reader.ReadInt32();
                         
             Type runtimeType = Type.GetType(typeName)!;
             return Enum.ToObject(runtimeType, numericValue);
@@ -246,12 +245,12 @@
 
         private static void WriteInt(BinaryWriter writer, int value) {
             writer.Write((byte)SerialisedType.INT);
-            writer.Write7BitEncodedInt(value);
+            writer.Write(value);
         }
 
         private static void WriteLong(BinaryWriter writer, long value) {
             writer.Write((byte)SerialisedType.LONG);
-            writer.Write7BitEncodedInt64(value);
+            writer.Write(value);
         }
 
         private static void WriteDouble(BinaryWriter writer, double value) {
@@ -277,7 +276,7 @@
         private static void WriteEnum(BinaryWriter writer, object value) {
             writer.Write((byte)SerialisedType.ENUM);
             writer.Write(value.GetType().AssemblyQualifiedName!);
-            writer.Write7BitEncodedInt((int)value);
+            writer.Write((int)value);
         }
     }
 }

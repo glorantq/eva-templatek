@@ -1,4 +1,6 @@
-﻿namespace Serialisation {
+﻿using System.Text;
+
+namespace Serialisation {
     internal enum ValamiEnum {
         ELSO, MASODIK, HARMADIK
     }
@@ -20,8 +22,6 @@
         public byte[] TesztByteHalmaz = { 55, 66, 77, 88, 99, 255 };
         public string[] TesztStringHalmaz = { "ABC", "DEF", "GHI", "JKL" };
 
-        public int[,] NaEz = { { 1, 2 }, { 3, 4 }, { 5, 6 } };
-
         public override string ToString()
         {
             return $"{nameof(TesztString)}: {TesztString}, {nameof(TesztInt)}: {TesztInt}, {nameof(TesztLong)}: {TesztLong}, {nameof(TesztDouble)}: {TesztDouble}, {nameof(TesztFloat)}: {TesztFloat}, {nameof(TesztByte)}: {TesztByte}, {nameof(TesztBool)}: {TesztBool}, {nameof(TesztIntHalmaz)}: [{string.Join(", ", TesztIntHalmaz)}], {nameof(TesztByteHalmaz)}: [{string.Join(", ", TesztByteHalmaz)}], {nameof(TesztStringHalmaz)}: [{string.Join(", ", TesztStringHalmaz)}], {nameof(TesztEnum)}: {TesztEnum}, {nameof(TesztEnumHalmaz)}: [{string.Join(", ", TesztEnumHalmaz)}]";
@@ -36,12 +36,17 @@
             menteni.TesztFloat = 6.9f;
             menteni.TesztStringHalmaz[2] = "XYZ";
             menteni.TesztEnum = ValamiEnum.MASODIK;
+            menteni.TesztStringHalmaz[0] = null;
             
             byte[] data = Serialiser.Serialise(menteni);
             Console.WriteLine(menteni);
 
             TestClass betoltott = Serialiser.Deserialise<TestClass>(data);
             Console.WriteLine(betoltott);
+
+            FileStream fileStream = new("./test.bin", FileMode.OpenOrCreate);
+            fileStream.Write(data);
+            fileStream.Close();
         }
     }
 }
